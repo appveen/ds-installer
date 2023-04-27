@@ -6,10 +6,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ConfigFormComponent } from './config-form/config-form.component';
+import { InstallScriptsComponent } from './install-scripts/install-scripts.component';
+import { ClickToCopyDirective } from './click-to-copy.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ConfigFormComponent,
+    InstallScriptsComponent,
+    ClickToCopyDirective
   ],
   imports: [
     BrowserModule,

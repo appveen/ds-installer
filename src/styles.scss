@@ -2,6 +2,7 @@
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
 
 * {
     font-family: 'Inter', sans-serif;
@@ -26,4 +27,25 @@ $count: 7;
     }
 
     $count: $count + 1;
+}
+
+
+.list-group-item-action {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.form-label {
+    min-width: 300px;
+    max-width: 300px;
+}
+
+.form-value {
+    min-width: 300px;
+    max-width: 300px;
+}
+
+.form-info {
+    word-break: break-all;
 }

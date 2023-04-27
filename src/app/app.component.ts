@@ -8,58 +8,54 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
 
-  activeTab!: any;
   formData: any;
   configData: any;
+  yamlsData: any;
+  originalYamlsData: any;
+  showGenerated: boolean;
   constructor(private httpClient: HttpClient) {
     this.configData = {};
+    this.showGenerated = false;
   }
 
   ngOnInit(): void {
     this.httpClient.get('assets/data/data.json').subscribe({
       next: (data) => {
         this.formData = data;
-        this.activeTab = this.menuList[0];
-        this.formList.forEach((item: any) => {
-          this.configData[item.key] = item.default;
-        });
       },
       error: (err) => {
 
       }
-    })
-  }
-  isChecked(item: any) {
-    if (typeof this.configData[item.key] == 'boolean') {
-      return this.configData[item.key];
-    }
-    if (item.default && item.default == 'true') {
-      return true;
-    }
-  }
+    });
+    this.httpClient.get('assets/data/yamls.json').subscribe({
+      next: (data) => {
+        this.yamlsData = data;
+        this.originalYamlsData = data;
+      },
+      error: (err) => {
 
-  onCheckedChange(event: Event, item: any) {
-    this.configData[item.key] = (event.target as HTMLInputElement).checked;
+      }
+    });
   }
 
-
-  get menuList() {
-    if (!this.formData) {
-      return [];
-    }
-    if (!this.formData.menu) {
-      return [];
-    }
-    return this.formData.menu;
+  generateFiles() {
+    this.yamlsData = JSON.parse(JSON.stringify(this.originalYamlsData));
+    let content = JSON.stringify(this.yamlsData);
+    Object.keys(this.configData).forEach(key => {
+      let regex = new RegExp(`__${key}__`, 'g');
+      content = content.replaceAll(regex, this.configData[key]);
+    });
+    this.yamlsData = JSON.parse(content);
+    this.showGenerated = true;
   }
 
-  get formList() {
-    if (!this.formData) {
-      return [];
-    }
-    if (!this.formData.forms) {
-      return [];
-    }
-    return this.formData.forms;
+  downloadFile(filename: string, text: any) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   }
 }

@@ -12,7 +12,8 @@
       <label for="releaseVersion" class="col-form-label">Release version</label>
     </div>
     <div class="col-2">
-      <input type="text" class="form-control form-control-sm" id="releaseVersion" [(ngModel)]="configData['RELEASE']">
+      <input type="text" class="form-control form-control-sm" id="releaseVersion" [(ngModel)]="configData['RELEASE']"
+        [disabled]="showGenerated">
     </div>
   </div>
   <div class="row m-3">
@@ -23,46 +24,12 @@
       </small>
     </div>
   </div>
-  <div class="d-flex align-items-center justify-content-between mx-3">
-    <h4>Configuration</h4>
-    <button type="button" class="btn btn-primary">Generate install files</button>
-  </div>
-  <div class="d-flex align-items-start p-3">
-    <div class="sidenav me-3 rounded">
-      <div class="list-group">
-        <div *ngFor="let item of menuList;let i=index" class="list-group-item list-group-item-action"
-          [class.active]="activeTab==item" (click)="activeTab=item">
-          {{item.label}}
-        </div>
-      </div>
-    </div>
-    <div class="content w-100 rounded">
-      <ng-container *ngFor="let item of menuList;">
-        <div *ngIf="item.key==activeTab.key" class="card">
-          <div class="card-header">
-            <h5 class="m-0">{{item.label}}</h5>
-          </div>
-          <div class="card-body bg-light rounded">
-            <ng-container *ngFor="let formItem of formList;let i=index">
-              <div *ngIf="formItem.menu==item.key" class="d-flex align-items-center mb-3">
-                <label class="form-label m-0 me-3 font-13 fw-500" [attr.for]="formItem.key">{{formItem.label}}</label>
-                <input *ngIf="formItem.type=='string'" class="form-value form-control form-control-sm me-3"
-                  [id]="formItem.key" type="text" [(ngModel)]="configData[formItem.key]">
-                <input *ngIf="formItem.type=='number'" class="form-value form-control form-control-sm me-3"
-                  [id]="formItem.key" type="number" [(ngModel)]="configData[formItem.key]">
-                <div *ngIf="formItem.type=='boolean'" class="form-value me-3">
-                  <input [id]="formItem.key" type="checkbox" (change)="onCheckedChange($event,formItem)"
-                    [checked]="isChecked(formItem)">
-                </div>
-                <span class="form-info text-secondary flex-fill font-12"><code
-                    class="form-key me-2 font-13">{{formItem.key}}</code>{{formItem.description}}</span>
-              </div>
-            </ng-container>
-          </div>
-        </div>
-      </ng-container>
-    </div>
-  </div>
+  <app-config-form *ngIf="!showGenerated" [formData]="formData" [configData]="configData" [yamlsData]="yamlsData" (generate)="generateFiles()">
+  </app-config-form>
+
+  <app-install-scripts *ngIf="showGenerated" [formData]="formData" [configData]="configData" [yamlsData]="yamlsData" (back)="showGenerated=false">
+  </app-install-scripts>
+
   <p class="m-3">
     <small>© Copyright 2022-2023, <a target="blank" href="https://www.datanimbus.com/">Datanimbus Technologies Pvt.
         Ltd</a></small>

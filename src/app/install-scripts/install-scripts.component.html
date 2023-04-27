@@ -1,0 +1,83 @@
+<div class="d-flex align-items-center justify-content-between mx-3">
+    <h4>Install Files</h4>
+    <div class="d-flex align-items-center">
+        <button type="button" class="btn btn-dark me-3" (click)="backClick()">Back</button>
+        <button type="button" class="btn btn-primary" (click)="downloadFiles()">Download</button>
+    </div>
+</div>
+<div class="d-flex align-items-start p-3">
+    <div class="sidenav me-3 rounded">
+        <div class="list-group">
+            <div *ngFor="let item of yamlList;let i=index" class="list-group-item list-group-item-action"
+                [class.active]="activeTab==item" (click)="activeTab=item">
+                {{item.label}}
+            </div>
+        </div>
+    </div>
+    <div class="content w-100 rounded d-flex align-items-start">
+        <ng-container *ngFor="let item of yamlList;">
+            <div *ngIf="item==activeTab" class="card flex-fill">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="m-0">{{item.label}}</h5>
+                    <button type="button" class="btn btn-sm btn-link" (click)="copyContent(yamlContent)">
+                        <span class="bi bi-clipboard-fill" ngbTooltip="Copy" placement="top" ngbPopover="Copied!"
+                            container="body"></span>
+                    </button>
+                </div>
+                <div class="card-body bg-white rounded">
+                    <pre class="border rounded bg-light p-3 mb-3">{{yamlContent}}</pre>
+                </div>
+            </div>
+        </ng-container>
+        <div class="commands ms-3">
+            <div class="card mb-3">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <span>Docker Commands</span>
+                    <button type="button" class="btn btn-sm btn-link" (click)="copyContent(yamlContent)">
+                        <span class="bi bi-clipboard-fill" ngbTooltip="Copy" placement="top" ngbPopover="Copied!"
+                            container="body"></span>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <pre class="border rounded bg-dark text-white p-3 mb-3">{{dockerCommands}}</pre>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <span>Self Signed Key & Cert Command</span>
+                    <button type="button" class="btn btn-sm btn-link" (click)="copyContent(selfSignedKeyCertCommand)">
+                        <span class="bi bi-clipboard-fill" ngbTooltip="Copy" placement="top" ngbPopover="Copied!"
+                            container="body"></span>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <pre class="border rounded bg-dark text-white p-3 mb-3">{{selfSignedKeyCertCommand}}</pre>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <span>K8S Secret Command</span>
+                    <button type="button" class="btn btn-sm btn-link" (click)="copyContent(k8sSecretCommand)">
+                        <span class="bi bi-clipboard-fill" ngbTooltip="Copy" placement="top" ngbPopover="Copied!"
+                            container="body"></span>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <pre class="border rounded bg-dark text-white p-3 mb-3">{{k8sSecretCommand}}</pre>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <span>K8S Apply Yamls Commands</span>
+                    <button type="button" class="btn btn-sm btn-link" (click)="copyContent(k8sCommands)">
+                        <span class="bi bi-clipboard-fill" ngbTooltip="Copy" placement="top" ngbPopover="Copied!"
+                            container="body"></span>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <pre class="border rounded bg-dark text-white p-3 mb-3">{{k8sCommands}}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
